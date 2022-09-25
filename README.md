@@ -1,2 +1,2 @@
-# reciclabot
+# ReciclaBOT
 Biblioteca para Arduino
