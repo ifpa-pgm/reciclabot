@@ -16,7 +16,8 @@ class ReciclaBot {
 
 void configurarPinoSensorLinha(int pino);
 void configurarPinoSensorDistancia(int pinoTrigger,int pinoEcho);
-void configurarMotores(int pinoM1avanco, int pinoM1recuo, int pinoM2avanco, int pinoM2recuo);
+void configurarPinosMotor1(int pinoRecuo,int pinoAvanco);
+void configurarPinosMotor2(int pinoRecuo,int pinoAvanco);
 
     /**
      * Mensura a distância do sensor a um obstáculo. 
@@ -35,16 +36,17 @@ void configurarMotores(int pinoM1avanco, int pinoM1recuo, int pinoM2avanco, int 
     void avancar(int distancia);
     void recuar(int distancia);
     void girar(int graus);
-    boolean refletiuLuz();
+    void parar();
+    bool refletiuLuz();
 
 
 
  private:
-    int pinoTriguer, pinoEcho, pinoSensorLinha;
+    int pinoTrigger, pinoEcho, pinoSensorLinha;
     int pinoMotor1avanco;
     int pinoMotor1recuo;
     int pinoMotor2avanco;
     int pinoMotor2recuo;
-};
+ };
 
 #endif // ReciclaBot_H

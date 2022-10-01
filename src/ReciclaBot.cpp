@@ -2,28 +2,43 @@
 #include "Arduino.h"
 #include "ReciclaBot.h"
 
-ReciclaBot::ReciclaBot()
+//ReciclaBot::ReciclaBot()
+//{
+    // pinMode(pinoTrigger, OUTPUT);
+    // pinMode(pinoEcho, INPUT);
+    // pinMode(pinoSensorLinha, INPUT);
+//}
+
+void ReciclaBot::configurarPinosMotor1(int pinoRecuo,int pinoAvanco)
 {
-   // pinMode(pinoTrigger, OUTPUT);
-    //pinMode(pinoEcho, INPUT);
-    //pinMode(pinoSensorLinha, INPUT);
+    pinMode(pinoAvanco, OUTPUT);
+    pinMode(pinoRecuo, OUTPUT);
+    this->pinoMotor1avanco = pinoAvanco;
+    this->pinoMotor1recuo = pinoRecuo;
 }
 
+void ReciclaBot::configurarPinosMotor2(int pinoRecuo,int pinoAvanco)
+{
+    pinMode(pinoAvanco, OUTPUT);
+    pinMode(pinoRecuo, OUTPUT);
+    this->pinoMotor2avanco = pinoAvanco;
+    this->pinoMotor2recuo = pinoRecuo;
+}
 
-ReciclaBot::configurarPinoSensorLinha(int pino)
+void ReciclaBot::configurarPinoSensorLinha(int pino)
+{
 
     this->pinoSensorLinha = pino;
     pinMode(this->pinoSensorLinha, INPUT);
 }
 
-ReciclaBot::configurarPinoSensorDistancia(int pinoTriguer, int pinoEcho)
-
-    this->pinoTriguer = pinoTriguer;
+void ReciclaBot::configurarPinoSensorDistancia(int pinoTrigger, int pinoEcho)
+{
+    this->pinoTrigger = pinoTrigger;
     this->pinoEcho = pinoEcho;
-    pinMode(this->pinoTriguer, OUTPUT);
+    pinMode(this->pinoTrigger, OUTPUT);
     pinMode(this->pinoEcho, INPUT);
 }
-
 
 int ReciclaBot::distancia()
 {
@@ -33,21 +48,22 @@ int ReciclaBot::distancia()
 
 int ReciclaBot::distancia(float temperatura)
 {
-   if(this->pinoTriguer < 1 || this->pinoTriguer > 13 ){
-       Serial.println("Valores para os pinos do sensor de distancia invalidos.");
-       return ;
-   }
-      if(this->pinoEcho < 1 || this->pinoEcho > 13 ){
-       Serial.println("Valores para os pinos do sensor de distancia invalidos.");
-       return ;
-   }
-   
-   
-    digitalWrite(pinoTrigger, LOW);
+    if (this->pinoTrigger < 1 || this->pinoTrigger > 13)
+    {
+        Serial.println("Valores para os pinos do sensor de distancia invalidos.");
+        return -1;
+    }
+    if (this->pinoEcho < 1 || this->pinoEcho > 13)
+    {
+        Serial.println("Valores para os pinos do sensor de distancia invalidos.");
+        return -1;
+    }
+
+    digitalWrite(this->pinoTrigger, LOW);
     delayMicroseconds(2);
-    digitalWrite(pinoTrigger, HIGH);
+    digitalWrite(this->pinoTrigger, HIGH);
     delayMicroseconds(10);
-    digitalWrite(pinoTrigger, LOW);
+    digitalWrite(this->pinoTrigger, LOW);
 
     unsigned long duracaoPulso = pulseIn(pinoEcho, HIGH);
 
@@ -56,7 +72,7 @@ int ReciclaBot::distancia(float temperatura)
     // if (distanciaCm == 0 || distanciaCm > 400) {
     if (distanciaCm > 400)
     {
-        return -1.0;
+        return -1;
     }
     else
     {
@@ -64,15 +80,15 @@ int ReciclaBot::distancia(float temperatura)
     }
 }
 
-boolean ReciclaBot::refletiuLuz()
+bool ReciclaBot::refletiuLuz()
 {
-  if(this->pinoSensorLinha < 1 || this->pinoSensorLinha > 13 ){
-      Serial.println("Valor para os pino do sensor seguidor de linha invalidos.");
-      return ;
-  }
+    if (this->pinoSensorLinha < 1 || this->pinoSensorLinha > 13)
+    {
+        Serial.println("Valor para os pino do sensor seguidor de linha invalidos.");
+        exit(-1);
+    }
 
-
-    if (digitalRead(pinoSensorLinha) == 0)
+    if (digitalRead(this->pinoSensorLinha) == 0)
     {
         return true;
     }
@@ -82,43 +98,64 @@ boolean ReciclaBot::refletiuLuz()
     }
 }
 
-void ReciclaBot::avancar()
+void ReciclaBot::avancar(int distancia)
 {
-    analogWrite(pinoMotor1avanco, 0);
-    analogWrite(pinoMotor1recuo, 255);
-    analogWrite(pinoMotor2avanco, 255);
-    analogWrite(pinoMotor2recuo, 0);
+    digitalWrite(this->pinoMotor1avanco, HIGH);
+    digitalWrite(this->pinoMotor1recuo, LOW);
+    digitalWrite(this->pinoMotor2avanco, HIGH);
+    digitalWrite(this->pinoMotor2recuo, LOW);
+
+    double velocidade = 0.02166;
+    double tempo = distancia / velocidade;
+    delay((int)tempo);
+
+    parar();
+    
 }
 
-void ReciclaBot::recuar()
+void ReciclaBot::recuar(int distancia)
 {
-   analogWrite(pinoMotor1avanco, 255);
-   analogWrite(pinoMotor1recuo, 0);
-   analogWrite(pinoMotor2avanco, 0);
-   analogWrite(pinoMotor2recuo, 255);
+    digitalWrite(this->pinoMotor1avanco, LOW);
+    digitalWrite(this->pinoMotor1recuo, HIGH);
+    digitalWrite(this->pinoMotor2avanco, LOW);
+    digitalWrite(this->pinoMotor2recuo, HIGH);
+
+   double velocidade = 0.02166;
+   double tempo = distancia / velocidade;
+   delay((int)tempo);
+   parar();
+   
 }
-void girar(int graus)
+void ReciclaBot::girar(int graus)
 {
     if (graus > 0)
     {
-     analogWrite(pinoMotor1avanco, 255);
-     analogWrite(pinoMotor1recuo, 0);
-     analogWrite(pinoMotor2avanco, 255);
-     analogWrite(pinoMotor2recuo, 0);
+        digitalWrite(this->pinoMotor1avanco, LOW);
+        digitalWrite(this->pinoMotor1recuo, HIGH);
+        digitalWrite(this->pinoMotor2avanco, HIGH);
+        digitalWrite(this->pinoMotor2recuo, LOW);
+        
+
     }
     else
     {
-     analogWrite(pinoMotor1avanco, 0);
-     analogWrite(pinoMotor1recuo, 255);
-     analogWrite(pinoMotor2avanco, 0);
-     analogWrite(pinoMotor2recuo, 255);
+        digitalWrite(this->pinoMotor1avanco, HIGH);
+        digitalWrite(this->pinoMotor1recuo, LOW);
+        digitalWrite(this->pinoMotor2avanco, LOW);
+        digitalWrite(this->pinoMotor2recuo, HIGH);
+        graus = graus * -1;
     }
+    double velocidade = 5.83333;
+    double tempo = graus * velocidade;
+    delay((int)tempo);
+    parar();
 }
 
-void parar()
+void ReciclaBot::parar()
 {
-    analogWrite(pinoMotor1avanco, 0);
-    analogWrite(pinoMotor1recuo, 0);
-    analogWrite(pinoMotor2avanco, 0);
-    analogWrite(pinoMotor2recuo, 0);
+    digitalWrite(this->pinoMotor1avanco, LOW);
+    digitalWrite(this->pinoMotor1recuo, LOW);
+    digitalWrite(this->pinoMotor2avanco, LOW);
+    digitalWrite(this->pinoMotor2recuo, LOW);
+    delay(100);
 }
