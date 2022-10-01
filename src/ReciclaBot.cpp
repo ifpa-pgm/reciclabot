@@ -4,19 +4,45 @@
 
 ReciclaBot::ReciclaBot()
 {
-    pinMode(pinoTrigger, OUTPUT);
-    pinMode(pinoEcho, INPUT);
-    pinMode(pinoSensorLinha, INPUT);
+   // pinMode(pinoTrigger, OUTPUT);
+    //pinMode(pinoEcho, INPUT);
+    //pinMode(pinoSensorLinha, INPUT);
 }
 
-float ReciclaBot::distanciaAdversario()
+
+ReciclaBot::configurarPinoSensorLinha(int pino)
+
+    this->pinoSensorLinha = pino;
+    pinMode(this->pinoSensorLinha, INPUT);
+}
+
+ReciclaBot::configurarPinoSensorDistancia(int pinoTriguer, int pinoEcho)
+
+    this->pinoTriguer = pinoTriguer;
+    this->pinoEcho = pinoEcho;
+    pinMode(this->pinoTriguer, OUTPUT);
+    pinMode(this->pinoEcho, INPUT);
+}
+
+
+int ReciclaBot::distancia()
 {
     // Using the approximate formula 19.307°C results in roughly 343m/s which is the commonly used value for air.
-    return distanciaAdversario(19.307);
+    return distancia(19.307);
 }
 
-float ReciclaBot::distanciaAdversario(float temperatura)
+int ReciclaBot::distancia(float temperatura)
 {
+   if(this->pinoTriguer < 1 || this->pinoTriguer > 13 ){
+       Serial.println("Valores para os pinos do sensor de distancia invalidos.");
+       return ;
+   }
+      if(this->pinoEcho < 1 || this->pinoEcho > 13 ){
+       Serial.println("Valores para os pinos do sensor de distancia invalidos.");
+       return ;
+   }
+   
+   
     digitalWrite(pinoTrigger, LOW);
     delayMicroseconds(2);
     digitalWrite(pinoTrigger, HIGH);
@@ -34,13 +60,19 @@ float ReciclaBot::distanciaAdversario(float temperatura)
     }
     else
     {
-        return distanciaCm;
+        return (int)distanciaCm;
     }
 }
 
-boolean ReciclaBot::estaNaBorda()
+boolean ReciclaBot::refletiuLuz()
 {
-    if (digitalRead(pinoSensor) == 0)
+  if(this->pinoSensorLinha < 1 || this->pinoSensorLinha > 13 ){
+      Serial.println("Valor para os pino do sensor seguidor de linha invalidos.");
+      return ;
+  }
+
+
+    if (digitalRead(pinoSensorLinha) == 0)
     {
         return true;
     }

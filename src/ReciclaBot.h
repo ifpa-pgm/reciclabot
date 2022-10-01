@@ -14,11 +14,15 @@ class ReciclaBot {
      */
     ReciclaBot();
 
+void configurarPinoSensorLinha(int pino);
+void configurarPinoSensorDistancia(int pinoTrigger,int pinoEcho);
+void configurarMotores(int pinoM1avanco, int pinoM1recuo, int pinoM2avanco, int pinoM2recuo);
+
     /**
      * Mensura a distância do sensor a um obstáculo. 
      * @return distância em centímetros.
      */
-    float distanciaAdversario();
+    int distancia();
 
     /**
      * Mensura a distância do sensor a um obstáculo. 
@@ -26,12 +30,12 @@ class ReciclaBot {
      * @param temperatura  Temperatura em graus celcius
      * @return distância em centímetros.
      */
-    float distanciaAdversario(float temperatura);
+    int distancia(float temperatura);
 
     void avancar(int distancia);
     void recuar(int distancia);
     void girar(int graus);
-    boolean estaNaBorda();
+    boolean refletiuLuz();
 
 
 
