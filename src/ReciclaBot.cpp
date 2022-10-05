@@ -2,12 +2,9 @@
 #include "Arduino.h"
 #include "ReciclaBot.h"
 
-//ReciclaBot::ReciclaBot()
-//{
-    // pinMode(pinoTrigger, OUTPUT);
-    // pinMode(pinoEcho, INPUT);
-    // pinMode(pinoSensorLinha, INPUT);
-//}
+ReciclaBot::ReciclaBot()
+{
+}
 
 void ReciclaBot::configurarPinosMotor1(int pinoRecuo,int pinoAvanco)
 {
