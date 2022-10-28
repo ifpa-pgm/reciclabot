@@ -97,55 +97,84 @@ bool ReciclaBot::refletiuLuz()
 
 void ReciclaBot::avancar(int distancia)
 {
-    digitalWrite(this->pinoMotor1avanco, HIGH);
-    digitalWrite(this->pinoMotor1recuo, LOW);
-    digitalWrite(this->pinoMotor2avanco, HIGH);
-    digitalWrite(this->pinoMotor2recuo, LOW);
 
     double velocidade = 0.02166;
     double tempo = distancia / velocidade;
-    delay((int)tempo);
 
-    parar();
-    
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - this->tempoInicial >= tempo) {
+
+     this->tempoInicial = currentMillis;
+
+
+        digitalWrite(this->pinoMotor1avanco, HIGH);
+        digitalWrite(this->pinoMotor1recuo, LOW);
+        digitalWrite(this->pinoMotor2avanco, HIGH);
+        digitalWrite(this->pinoMotor2recuo, LOW);
+
+   
+    }
+
 }
 
 void ReciclaBot::recuar(int distancia)
 {
-    digitalWrite(this->pinoMotor1avanco, LOW);
-    digitalWrite(this->pinoMotor1recuo, HIGH);
-    digitalWrite(this->pinoMotor2avanco, LOW);
-    digitalWrite(this->pinoMotor2recuo, HIGH);
 
-   double velocidade = 0.02166;
-   double tempo = distancia / velocidade;
-   delay((int)tempo);
-   parar();
+
+    double velocidade = 0.02166;
+    double tempo = distancia / velocidade;
+
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - this->tempoInicialRecuo >= tempo) {
+
+     this->tempoInicialRecuo = currentMillis;
+
+
+        digitalWrite(this->pinoMotor1avanco, LOW);
+        digitalWrite(this->pinoMotor1recuo, HIGH);
+        digitalWrite(this->pinoMotor2avanco, LOW);
+        digitalWrite(this->pinoMotor2recuo, HIGH);
+
    
+    }
+
+
 }
 void ReciclaBot::girar(int graus)
 {
-    if (graus > 0)
-    {
-        digitalWrite(this->pinoMotor1avanco, LOW);
-        digitalWrite(this->pinoMotor1recuo, HIGH);
-        digitalWrite(this->pinoMotor2avanco, HIGH);
-        digitalWrite(this->pinoMotor2recuo, LOW);
-        
 
-    }
-    else
-    {
-        digitalWrite(this->pinoMotor1avanco, HIGH);
-        digitalWrite(this->pinoMotor1recuo, LOW);
-        digitalWrite(this->pinoMotor2avanco, LOW);
-        digitalWrite(this->pinoMotor2recuo, HIGH);
-        graus = graus * -1;
-    }
     double velocidade = 5.83333;
     double tempo = graus * velocidade;
-    delay((int)tempo);
-    parar();
+
+    unsigned long currentMillis = millis();
+
+    if (currentMillis - this->tempoInicialCurva >= tempo) {
+
+     this->tempoInicialCurva = currentMillis;
+        if (graus > 0)
+        {
+            digitalWrite(this->pinoMotor1avanco, LOW);
+            digitalWrite(this->pinoMotor1recuo, HIGH);
+            digitalWrite(this->pinoMotor2avanco, HIGH);
+            digitalWrite(this->pinoMotor2recuo, LOW);
+            
+
+        }
+        else
+        {
+            digitalWrite(this->pinoMotor1avanco, HIGH);
+            digitalWrite(this->pinoMotor1recuo, LOW);
+            digitalWrite(this->pinoMotor2avanco, LOW);
+            digitalWrite(this->pinoMotor2recuo, HIGH);
+            graus = graus * -1;
+        }
+
+   
+    }
+
+  
 }
 
 void ReciclaBot::parar()
@@ -154,5 +183,5 @@ void ReciclaBot::parar()
     digitalWrite(this->pinoMotor1recuo, LOW);
     digitalWrite(this->pinoMotor2avanco, LOW);
     digitalWrite(this->pinoMotor2recuo, LOW);
-    delay(100);
+    //delay(100);
 }

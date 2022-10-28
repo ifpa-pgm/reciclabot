@@ -47,6 +47,10 @@ void configurarPinosMotor2(int pinoRecuo,int pinoAvanco);
     int pinoMotor1recuo;
     int pinoMotor2avanco;
     int pinoMotor2recuo;
+    int tempoInicial = 0;
+    int tempoInicialCurva = 0;
+    int tempoInicialRecuo = 0;
+    
  };
 
 #endif // ReciclaBot_H
