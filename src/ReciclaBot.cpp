@@ -94,6 +94,18 @@ bool ReciclaBot::refletiuLuz()
         return false;
     }
 }
+bool ReciclaBot::absorveuLuz(){
+    if (this->pinoSensorLinha < 1 || this->pinoSensorLinha > 13)
+    {
+        Serial.println("Valor para os pino do sensor seguidor de linha invalidos.");
+        exit(-1);
+    }
+
+  
+    return digitalRead(this->pinoSensorLinha) ;
+     
+}
+
 
 void ReciclaBot::avancar(int distancia)
 {

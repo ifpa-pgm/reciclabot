@@ -8,23 +8,23 @@ ReciclaBot robo;
 */
 int estado = 0;
 void setup() {
-  robo.configurarPinoSensorLinha(11);
+  robo.configurarPinoSensorLinha(3);
   robo.configurarPinoSensorDistancia(13, 12);
-  robo.configurarPinosMotor1(4, 5);
-  robo.configurarPinosMotor2(6, 7);
+  robo.configurarPinosMotor1(6, 7);
+  robo.configurarPinosMotor2(9, 10);
 }
 
 void loop() {
-  if(!robo.refletiuLuz()){
+  if(robo.refletiuLuz()){
     robo.girar(90);//graus
-    robo.avancar(20);//cm
+    robo.avancar(10);//cm
     robo.girar(90);
-    robo.avancar(20);
+    robo.avancar(10);
 
     estado = 1;
   }
 
-  if(estado==1){//busca
+  if(estado==1){//busca inimigo
     robo.girar(45);
 
     if(robo.distancia() <= 20){
@@ -32,7 +32,7 @@ void loop() {
     }
   }
 
-  if(estado==2){//ataque
+  if(estado==2){//Atacar
     robo.avancar(80);
   }
 }

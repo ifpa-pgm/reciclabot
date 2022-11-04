@@ -38,6 +38,7 @@ void configurarPinosMotor2(int pinoRecuo,int pinoAvanco);
     void girar(int graus);
     void parar();
     bool refletiuLuz();
+    bool absorveuLuz();
 
 
 
