@@ -33,9 +33,9 @@ void configurarPinosMotor2(int pinoRecuo,int pinoAvanco);
      */
     int distancia(float temperatura);
 
-    void avancar(int distancia);
-    void recuar(int distancia);
-    void girar(int graus);
+    void avancar(int velociadade);
+    void recuar(int velociadade);
+    void girar(int velocidade);
     void parar();
     bool refletiuLuz();
     bool absorveuLuz();
@@ -48,9 +48,9 @@ void configurarPinosMotor2(int pinoRecuo,int pinoAvanco);
     int pinoMotor1recuo;
     int pinoMotor2avanco;
     int pinoMotor2recuo;
-    int tempoInicial = 0;
-    int tempoInicialCurva = 0;
-    int tempoInicialRecuo = 0;
+    unsigned long tempoInicial = 0;
+    unsigned long tempoInicialCurva = 0;
+    unsigned long tempoInicialRecuo = 0;
     
  };
 
