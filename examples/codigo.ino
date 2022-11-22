@@ -27,7 +27,7 @@ void loop() {
     delay(200);
 
     robo.avancar(120);
-    delay2(0);
+    delay(200);
 
     robo.girar(-200);
     delay(200);
